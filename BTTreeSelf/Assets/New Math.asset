@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553c7679484d36943b26912b8d46de5c, type: 3}
+  m_Name: New Math
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 2343814358090294628}
+  - {fileID: 4548101773877585933}
+  groups:
+  - groupName: Group
+    headerColor: {r: 0.44990316, g: 0.31770238, b: 0.7305602, a: 0.5}
+    nodes:
+    - {fileID: 4548101773877585933}
+    - {fileID: 2343814358090294628}
+--- !u!114 &2343814358090294628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96557ada2f4ac6e44a84f5945dd97d83, type: 3}
+  m_Name: DisplayValueNode
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 540, y: 168}
+  ports:
+    keys:
+    - result
+    values:
+    - fieldName: result
+      node: {fileID: 2343814358090294628}
+      direction: 0
+      capacity: 1
+      typeConstraint: 0
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+  result: 
+--- !u!114 &4548101773877585933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e17f63e6789a074197c13e2e186fb86, type: 3}
+  m_Name: AnimationClipNode
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 864, y: 204}
+  ports:
+    keys:
+    - clip
+    - length
+    values:
+    - fieldName: clip
+      node: {fileID: 4548101773877585933}
+      direction: 1
+      capacity: 0
+      typeConstraint: 1
+      _typeQualifiedName: UnityEngine.AnimationClip, UnityEngine.AnimationModule,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+    - fieldName: length
+      node: {fileID: 4548101773877585933}
+      direction: 1
+      capacity: 0
+      typeConstraint: 1
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+  clip: {fileID: 0}
+  length: 0
