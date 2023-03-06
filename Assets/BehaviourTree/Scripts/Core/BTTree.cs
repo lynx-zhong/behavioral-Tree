@@ -41,7 +41,7 @@ public abstract class BTTree : MonoBehaviour
 		}
 
 		// Iterate the BT tree now!
-		if (_root.Evaluate()) 
+		if (_root.CheckNodeCanExecute()) 
 		{
 			_root.Tick();
 		}

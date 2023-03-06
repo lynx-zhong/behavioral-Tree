@@ -77,22 +77,21 @@ namespace BehaviourTreeEditor
 
         private void OnGUI()
         {
-            DrawWorkSpace();
+            DrawZoneWorkSpace();
 
+            // 在左边的行为树编辑窗口布局
             GUILayout.BeginArea(treeStructShowRect);
-
-            DrawGrid();
-
-            // 检测点击事件
-            UserInput(Event.current);
-
-            DrawWindows();
-
+            DrawLeftWorkSpaceBgLine();
+            CheckUserInput(Event.current);
+            DrawAllBehaviourTerrNode();
             GUILayout.EndArea();
         }
 
         #region 用户输入
-        private void UserInput(Event _event) 
+        /// <summary>
+        /// 检测用户输入事件
+        /// </summary>
+        private void CheckUserInput(Event _event) 
         {
             // 初始化输入
             BTEditorGlobalUtil.GlobalPosScale = 1;
@@ -176,7 +175,6 @@ namespace BehaviourTreeEditor
         private void GetLocalSpritsShowToMenu<T>(GenericMenu menu, string nodeParentName,OperationType operationType) where T:class
         {
             Type[] types = GetAssemblyTargetCs<T>();
-
             var targetType = typeof(T);
 
             List<string> allNames = new List<string>();
@@ -199,11 +197,12 @@ namespace BehaviourTreeEditor
             string csAssemblyPath = Application.dataPath + "/../Library/ScriptAssemblies/Assembly-CSharp.dll";
             Assembly assembly = Assembly.LoadFile(csAssemblyPath);
             Type[] types = assembly.GetTypes();
-
             return types;
         }
 
-
+        /// <summary>
+        /// 右键选择操作回调
+        /// </summary>
         void ContextCallback(object _nodeData)
         {
             MenuItemData nodeData = (MenuItemData)_nodeData;
@@ -211,8 +210,7 @@ namespace BehaviourTreeEditor
             switch (nodeData.action)
             {
                 case OperationType.addState:
-                    BTNodeEditor bTStateGUIBase = new BTNodeEditor(mousePosition, nodeData.nodeName);
-                    nodes.Add(bTStateGUIBase);
+                    AddFristNode(nodeData);
                     break;
                 case OperationType.addChildState:
                     BTNodeEditor bTStateGUI = new BTNodeEditor(mousePosition,nodeData.nodeName);
@@ -231,6 +229,27 @@ namespace BehaviourTreeEditor
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// 在黑板上添加首个节点
+        /// </summary>
+        void AddFristNode(MenuItemData nodeData)
+        {
+            if(nodes.Count > 0)
+            {
+                Debug.LogError("错误操作，已经添加了 起始节点");
+                return;
+            }
+
+            BTNodeEditor enterNode = new BTNodeEditor(mousePosition, "Enter");
+            nodes.Add(enterNode);
+
+            Vector2 nodePos = new Vector2(mousePosition.x,mousePosition.y + 100);
+            BTNodeEditor bTStateGUIBase = new BTNodeEditor(nodePos, nodeData.nodeName);
+            nodes.Add(bTStateGUIBase);
+
+            enterNode.AddChildNode(bTStateGUIBase);
         }
 
         private void RightMouseClick(Event _event)
@@ -314,7 +333,10 @@ namespace BehaviourTreeEditor
 
         private int titleSelected = 0;
 
-        private void DrawWorkSpace() 
+        /// <summary>
+        /// 绘制大的功能分区
+        /// </summary>
+        private void DrawZoneWorkSpace() 
         {
             leftBehaviourOperationRect = new Rect(2,22,300,position.height - 25);
 
@@ -368,11 +390,12 @@ namespace BehaviourTreeEditor
         /// </summary>
         private void BehaviorInfoShow() 
         {
-            GUILayout.Label("左边的  按到");
+            GUILayout.Label("展示行为树信息窗口");
         }
 
         private string allActionSearch = string.Empty;
         private Vector2 sollviewPos = Vector2.zero;
+
         /// <summary>
         /// 展示所有的行为代码
         /// </summary>
@@ -384,39 +407,51 @@ namespace BehaviourTreeEditor
             GUILayout.EndScrollView();
         }
 
-        private void DrawWindows()
+        /// <summary>
+        /// 绘制所有的行为树节点
+        /// </summary>
+        private void DrawAllBehaviourTerrNode()
         {
             BeginWindows();
 
             foreach (BTNodeEditor bTNodeGUI in nodes)
             {
-                bTNodeGUI.DrawCurve();
+                bTNodeGUI.DrawNodeConnectLine();
             }
 
             for (int i = 0; i < nodes.Count; i++)
             {
-                nodes[i].DrawWindow(mousePosition,selectedNode);
+                nodes[i].DrawNodeWindow(mousePosition,selectedNode);
             }
 
             EndWindows();
         }
 
         /// <summary>
-        /// 画格子
+        /// 绘制行为树编辑空间的背景线条
         /// </summary>
-        private void DrawGrid() 
+        private void DrawLeftWorkSpaceBgLine() 
         {
-            float gridSize = 60 * BTEditorGlobalUtil.GlobalSizeScale;
-
-            Handles.color = new Color(0.2f,0.2f,0.2f,1);
-
-            for (int i = 1; i < Mathf.CeilToInt(treeStructShowRect .width/ gridSize); i++)
+            Handles.color = new Color(0.2f, 0.2f, 0.2f, 1);
+            float gridSize = 12 * BTEditorGlobalUtil.GlobalSizeScale;
+            for (int i = 1; i < Mathf.CeilToInt(treeStructShowRect.width / gridSize); i++)
             {
-                Handles.DrawLine(new Vector2(i * gridSize,0),new Vector2(i * gridSize, treeStructShowRect.height));
+                Handles.DrawLine(new Vector2(i * gridSize, 0), new Vector2(i * gridSize, treeStructShowRect.height));
             }
-            for (int i = 1; i < Mathf.CeilToInt(treeStructShowRect.height/gridSize); i++)
+            for (int i = 1; i < Mathf.CeilToInt(treeStructShowRect.height / gridSize); i++)
             {
-                Handles.DrawLine(new Vector2(0,i * gridSize), new Vector2(treeStructShowRect.width,i * gridSize));
+                Handles.DrawLine(new Vector2(0, i * gridSize), new Vector2(treeStructShowRect.width, i * gridSize));
+            }
+
+            gridSize = 60 * BTEditorGlobalUtil.GlobalSizeScale;
+            Handles.color = new Color(0.25f, 0.25f, 0.25f, 1);
+            for (int i = 1; i < Mathf.CeilToInt(treeStructShowRect.width / gridSize); i++)
+            {
+                Handles.DrawLine(new Vector2(i * gridSize, 0), new Vector2(i * gridSize, treeStructShowRect.height));
+            }
+            for (int i = 1; i < Mathf.CeilToInt(treeStructShowRect.height / gridSize); i++)
+            {
+                Handles.DrawLine(new Vector2(0, i * gridSize), new Vector2(treeStructShowRect.width, i * gridSize));
             }
         }
     }

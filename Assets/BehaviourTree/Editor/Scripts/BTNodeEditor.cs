@@ -2,45 +2,47 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace BehaviourTreeEditor
 {
     public class BTNodeEditor: EditorWindow
     {
-        #region 节点自身属性
-        public int windowID = 0;    // 无用
-        public Rect windowRect;
-        public Vector2 nodePos = Vector2.zero;
-        #endregion
+        #region 节点icon尺寸相关常量
+        float nodeWidth { get { return 115 / 11 * className.Length > 115 ? 115 / 11 * className.Length : 115; } }
+        const int nodeHeight = 100;
+        const float nodeBgSpace = 7.5f;
+        const int nodeConnectIconWidth = 42;
+        const int nodeConnectIconHeight = 16;
+        const int centerIconLength = 44;
 
-        #region 节点icon相关
         public string ItemTopIconPath = "DarkTaskConnectionTop";
         public string NodeCenterIconPath = "DarkTaskCompact";
         public string NodeSelectedCenterIconPath = "DarkTaskSelectedCompact";
         public string ItemDownIconPath = "DarkTaskConnectionBottom";
-
-
-        private float GlobalSizeScale { get { return BTEditorGlobalUtil.GlobalSizeScale; } }
-
-        public Rect ItemTitleTopRect { get { return new Rect(37 * GlobalSizeScale, 0 * GlobalSizeScale, 42 * GlobalSizeScale, 16 * GlobalSizeScale); } }
-
-        public Rect ItemTitleDownRect { get { return new Rect(37 * GlobalSizeScale, 84 * GlobalSizeScale, 42 * GlobalSizeScale, 16 * GlobalSizeScale); } }
-
+        public string IconBoxPath = "DarkTaskBorder";
         public string RootIconPath = "DarkEntryIcon";
 
-        public Rect DefualtIconRect { get { return new Rect(37 * GlobalSizeScale, 18 * GlobalSizeScale, 44 * GlobalSizeScale, 44 * GlobalSizeScale); } }
+        #endregion
 
-        public string IconBoxPath = "DarkTaskBorder";
+        #region 节点自身属性
+        public int windowID = 0;
+        public Rect windowRect;
+        public Vector2 nodePos = Vector2.zero;
+        #endregion
 
-        //public Rect IconBoxRect { get { return new Rect(37 * GlobalSizeScale, 18 * GlobalSizeScale, 44 * GlobalSizeScale, 44 * GlobalSizeScale); } }
-        public Rect IconBoxRect { get { return new Rect((itemWidth / 2 - 22)  * GlobalSizeScale, 18 * GlobalSizeScale, 44 * GlobalSizeScale, 44 * GlobalSizeScale); } }
 
-        public Rect TitleLableRect { get { return new Rect(0, 58 * GlobalSizeScale, 115 * GlobalSizeScale, 30 * GlobalSizeScale); } }
 
-        public Rect ItemCenterRect { get { return new Rect(0, 7.5f * GlobalSizeScale, itemWidth * GlobalSizeScale, 85 * GlobalSizeScale); } }
-        public Vector2 ItemEmptySize { get { return new Vector2(itemWidth, 100); } }
+        #region 节点icon相关
+        private float GlobalSizeScale { get { return BTEditorGlobalUtil.GlobalSizeScale; } }
+        public Vector2 ItemEmptySize { get { return new Vector2(nodeWidth, nodeHeight); } }
+        public Rect ItemBgRect { get { return new Rect(0, nodeBgSpace * GlobalSizeScale, nodeWidth * GlobalSizeScale, (nodeHeight - nodeBgSpace*2) * GlobalSizeScale); } }
+        public Rect NodeTopConnectIconRect { get { return new Rect((nodeWidth / 2 - nodeConnectIconWidth / 2) * GlobalSizeScale, 0 * GlobalSizeScale, nodeConnectIconWidth * GlobalSizeScale, nodeConnectIconHeight * GlobalSizeScale); } }
+        public Rect NodeDownConnectIconRect { get { return new Rect((nodeWidth / 2 - nodeConnectIconWidth / 2) * GlobalSizeScale, (nodeHeight - nodeBgSpace * 2) * GlobalSizeScale, nodeConnectIconWidth * GlobalSizeScale, nodeConnectIconHeight * GlobalSizeScale); } }
 
-        private float itemWidth { get { return 115 / 11 * className.Length > 115 ? 115 / 11 * className.Length : 115; } }
+        public Rect CenterIconRect { get { return new Rect((nodeWidth / 2 - centerIconLength/2) * GlobalSizeScale, 18 * GlobalSizeScale, centerIconLength * GlobalSizeScale, centerIconLength * GlobalSizeScale); } }
+        public Rect IconBoxRect { get { return new Rect((nodeWidth / 2 - 22)  * GlobalSizeScale, 18 * GlobalSizeScale, centerIconLength * GlobalSizeScale, centerIconLength * GlobalSizeScale); } }
+        public Rect TitleLableRect { get { return new Rect(0, 58 * GlobalSizeScale, nodeWidth * GlobalSizeScale, 30 * GlobalSizeScale); } }
         #endregion
 
         string nodeCenterIconPath;
@@ -50,12 +52,12 @@ namespace BehaviourTreeEditor
         public List<BTNodeEditor> childsNode;
 
 
-        public BTNodeEditor(Vector2 _nodePos, string ClassName)
+        public BTNodeEditor(Vector2 nodePos, string className)
         {
             Init();
 
-            nodePos = _nodePos;
-            className = ClassName;
+            this.nodePos = nodePos;
+            this.className = className;
         }
 
         void Init() 
@@ -65,48 +67,62 @@ namespace BehaviourTreeEditor
             childsNode = new List<BTNodeEditor>();
         }
 
+        public void AddChildNode(BTNodeEditor childNode)
+        {
+            childsNode.Add(childNode);
+            childNode.parentNode = this;
+        }
 
-        // 根据改变了的比例绘制
-        public virtual void DrawWindow(Vector2 mousePos,BTNodeEditor tNodeEditorBase) 
+        /// <summary>
+        /// 绘制行为树节点弹窗
+        /// </summary>
+        /// <param name="curSelectedNode"> 当前选中的节点 </param>
+        public virtual void DrawNodeWindow(Vector2 mousePos,BTNodeEditor curSelectedNode) 
         {
             windowRect = new Rect(nodePos, ItemEmptySize * BTEditorGlobalUtil.GlobalSizeScale);
-            windowRect = GUI.Window(windowID, windowRect, WindowCallBack, "", "RL Element");
+            windowRect = GUI.Window(windowID, windowRect, WindowCreateCallBackDrawInfo, "", "RL Element");
 
-            if (tNodeEditorBase != null && tNodeEditorBase.windowID == windowID)
+            if (curSelectedNode != null && curSelectedNode.windowID == windowID)
                 nodeCenterIconPath = NodeSelectedCenterIconPath;
             else
                 nodeCenterIconPath = NodeCenterIconPath;
         }
 
-        public virtual void WindowCallBack(int selfWindowID)
+        /// <summary>
+        /// 窗口创建回调 开始绘制窗口
+        /// </summary>
+        public virtual void WindowCreateCallBackDrawInfo(int selfWindowID)
         {
             // 上下帽子
-            BTEditorGlobalUtil.EditorLoadTexture(ItemTopIconPath, ItemTitleTopRect);
-            BTEditorGlobalUtil.EditorLoadTexture(ItemDownIconPath, ItemTitleDownRect);
+            BTEditorGlobalUtil.EditorLoadTexture(ItemTopIconPath, NodeTopConnectIconRect);
+            BTEditorGlobalUtil.EditorLoadTexture(ItemDownIconPath, NodeDownConnectIconRect);
 
             // 中间图形
-            BTEditorGlobalUtil.EditorLoadTexture(nodeCenterIconPath, new Rect(ItemCenterRect.position, new Vector2(ItemCenterRect.width,ItemCenterRect.height)));
+            BTEditorGlobalUtil.EditorLoadTexture(nodeCenterIconPath, new Rect(ItemBgRect.position, new Vector2(ItemBgRect.width, ItemBgRect.height)));
             BTEditorGlobalUtil.EditorLoadTexture(IconBoxPath, IconBoxRect);
 
-            BTEditorGlobalUtil.EditorLoadTexture(RootIconPath, DefualtIconRect);
+            BTEditorGlobalUtil.EditorLoadTexture(RootIconPath, CenterIconRect);
             GUIStyle iconNameStyle = BTEditorGlobalUtil.GetNodeNameGUIStyle();
             EditorGUI.LabelField(TitleLableRect, className, iconNameStyle);
         }
 
 
         #region 画线
-        public virtual void DrawCurve()
+        /// <summary>
+        /// 画节点的连接线
+        /// </summary>
+        public virtual void DrawNodeConnectLine()
         {
             // 父物体到自己的线
             if (parentNode != null)
             {
                 Vector2 startPos = new Vector2(parentNode.windowRect.x + parentNode.windowRect.width / 2, parentNode.windowRect.y + parentNode.windowRect.height - 20);
                 Vector2 endPos = new Vector2(windowRect.x + windowRect.width / 2, windowRect.y + 20);
-                DrawCurveTool(startPos, endPos);
+                DrawLineTool(startPos, endPos);
             }
         }
 
-        public void DrawCurveTool(Vector2 startPos, Vector2 endPos)
+        public void DrawLineTool(Vector2 startPos, Vector2 endPos)
         {
             Vector2 centerPos1;
             Vector2 centerPos2;

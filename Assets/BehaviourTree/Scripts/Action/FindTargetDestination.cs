@@ -2,8 +2,6 @@
 using System.Collections;
 using BT_BehaviourTree;
 
-
-
 public abstract class FindTargetDestination : BTAction 
 {
 	protected string _targetName;

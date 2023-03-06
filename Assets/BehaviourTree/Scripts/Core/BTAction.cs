@@ -4,16 +4,9 @@ using System.Collections.Generic;
 
 namespace BT_BehaviourTree 
 {
-
 	/// <summary>
-	/// BTActionÊÇĞĞÎª½ÚµãµÄ»ùÀà¡£
-	/// Ëü²»ÄÜÌí¼Ó/ÒÆ³ı×ÓÔªËØ¡£
-	/// 
-	/// ÖØÔØÒÔÏÂ´úÂëÀ´¹¹½¨Ò»¸öĞĞÎª(ËùÓĞµÄĞĞÎª¶¼ÊÇ¿ÉÑ¡µÄ):
-	/// - Enter
-	/// - Execute
-	/// - Exit
-	/// - Clear
+	/// åŠŸèƒ½èŠ‚ç‚¹
+	/// æ‰€æœ‰å®é™…çš„åŠŸèƒ½æ“ä½œ ç»§æ‰¿è¯¥èŠ‚ç‚¹
 	/// </summary>
 	public class BTAction : BTNode 
 	{
@@ -25,7 +18,7 @@ namespace BT_BehaviourTree
 		protected virtual void Enter () 
 		{
 			if (BTConfiguration.ENABLE_BTACTION_LOG) 
-			{	// For debug
+			{
 				Debug.Log("Enter " + this.name + " [" + this.GetType().ToString() + "]");
 			}
 		}
@@ -33,7 +26,7 @@ namespace BT_BehaviourTree
 		protected virtual void Exit () 
 		{
 			if (BTConfiguration.ENABLE_BTACTION_LOG) 
-			{	// For debug
+			{
 				Debug.Log("Exit " + this.name + " [" + this.GetType().ToString() + "]");
 			}
 		}
@@ -46,21 +39,25 @@ namespace BT_BehaviourTree
 		public override void Clear () 
 		{
 			if (_status != BTActionStatus.Ready) 
-			{	// not cleared yet
+			{
 				Exit();
 				_status = BTActionStatus.Ready;
 			}
 		}
 		
-		public override BTResult Tick () {
+		public override BTResult Tick () 
+		{
 			BTResult result = BTResult.Ended;
-			if (_status == BTActionStatus.Ready) {
+			if (_status == BTActionStatus.Ready) 
+			{
 				Enter();
 				_status = BTActionStatus.Running;
 			}
-			if (_status == BTActionStatus.Running) {		// not using else so that the status changes reflect instantly
+			if (_status == BTActionStatus.Running) 
+			{
 				result = Execute();
-				if (result != BTResult.Running) {
+				if (result != BTResult.Running) 
+				{
 					Exit();
 					_status = BTActionStatus.Ready;
 				}
@@ -68,14 +65,15 @@ namespace BT_BehaviourTree
 			return result;
 		}
 
-		public override void AddChild (BTNode aNode) {
+		public override void AddChild (BTNode aNode) 
+		{
 			Debug.LogError("BTAction: Cannot add a node into BTAction.");
 		}
 
-		public override void RemoveChild (BTNode aNode) {
+		public override void RemoveChild (BTNode aNode) 
+		{
 			Debug.LogError("BTAction: Cannot remove a node into BTAction.");
 		}
-		
 		
 		private enum BTActionStatus {
 			Ready = 1,

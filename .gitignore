@@ -2,3 +2,5 @@
 *.git
 Logs
 Library
+obj
+Temp

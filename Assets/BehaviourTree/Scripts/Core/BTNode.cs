@@ -4,10 +4,6 @@ using System.Collections.Generic;
 
 namespace BT_BehaviourTree 
 {
-
-	/// <summary>
-	/// ËùÓĞ½ÚµãµÄ¸ù½Úµã »ùÀà
-	/// </summary>
 	public abstract class BTNode 
 	{
 		public string name;
@@ -16,24 +12,16 @@ namespace BT_BehaviourTree
 		public List<BTNode> children {get{return _children;}}
 
 		/// <summary>
-		/// ½ÚµãµÄ×¼ÈëÌõ¼ş£¬Ã¿Ò»¸öBTNode¶¼»áÓĞÒ»¸ö¡£Ò²¾ÍÊÇÒÔ¸¸½Úµã
+		/// æ‰€æœ‰èŠ‚ç‚¹éƒ½å¯ä»¥æœ‰çš„ï¼ŒèŠ‚ç‚¹æ‰§è¡Œæ¡ä»¶çš„å‰ç½®èŠ‚ç‚¹
+		/// å¯æœ‰å¯æ— 
 		/// </summary>
 		public BTPrecondition precondition;
 
-		/// <summary>
-		/// ´æ·ÅËùÓĞĞĞÎªÊ÷ ËùÊ¹ÓÃµÄÊı¾İ£¨ÔÚUnity3dµÄÓï¾³ÏÂ£¬Database¿É¼Ì³ĞMonoBehavior£¬¿ÉÒÔÌá¹©¸÷ÖÖComponent¸ø½ÚµãÊ¹ÓÃ£©
-		/// </summary>
 		public Database database;
 
-		/// <summary>
-		/// ÀäÈ´Ê±¼ä ¼ä¸ô
-		/// </summary>
 		public float interval = 0;
 		private float _lastTimeEvaluated = 0;
 
-		/// <summary>
-		/// ÊÇ·ñ¼¤»î
-		/// </summary>
 		public bool activated;
 
 
@@ -44,9 +32,8 @@ namespace BT_BehaviourTree
 			this.precondition = precondition;
 		}
 
-		// public virtual void Init () {}
 		/// <summary>
-		/// ½Úµã³õÊ¼»¯µÄ½Ó¿Ú£¬´«ÈëÊı¾İ£¬ÉèÖÃ¼¤»î×´Ì¬£¬×îÖ÷ÒªÊÇ´«ÈëÊı¾İ£¬Database¿ÉÌá¹©Unity3dÖĞµÄComponent¸ø½ÚµãÊ¹ÓÃ
+		/// æ¿€æ´»èŠ‚ç‚¹ ä¼ å…¥æ•°æ®
 		/// </summary>
 		public virtual void Activate (Database database) 
 		{
@@ -72,25 +59,25 @@ namespace BT_BehaviourTree
 		}
 
 		/// <summary>
-		/// // ¼ì²é½ÚµãÄÜ·ñÖ´ĞĞ£¬°üÀ¨ÊÇ·ñactivated£¬ÊÇ·ñÀäÈ´Íê³É£¬ÊÇ·ñÍ¨¹ı×¼ÈëÌõ¼ş£¬ºÍ¸öĞÔ»¯¼ì²é (DoEvaluate)
+		/// æ£€æµ‹èŠ‚ç‚¹æ˜¯å¦å¯æ‰§è¡Œ
 		/// </summary>
-		public bool Evaluate () 
+		public bool CheckNodeCanExecute () 
 		{
-			bool coolDownOK = CheckTimer();
+			bool coolDownOK = CheckCoolTimer();
 
-			return activated && coolDownOK && (precondition == null || precondition.Check()) && DoEvaluate();
+			return activated && coolDownOK && (precondition == null || precondition.Check()) && CustomNodeExecuteCondition();
 		}
 
 		/// <summary>
-		/// // ¸ø×ÓÀàÌá¹©¸öĞÔ»¯¼ì²éµÄ½Ó¿Ú
+		/// è‡ªå®šä¹‰èŠ‚ç‚¹çš„æ‰§è¡Œæ¡ä»¶
 		/// </summary>
-		protected virtual bool DoEvaluate () 
+		protected virtual bool CustomNodeExecuteCondition () 
 		{
 			return true;
 		}
 
 		/// <summary>
-		/// ½ÚµãÖ´ĞĞµÄ½Ó¿Ú£¬ĞèÒª·µ»ØBTResult.Running£¬»òÕßBTResult.Ended
+		/// æ¯å¸§æ£€æµ‹è¡Œä¸ºæ ‘èŠ‚ç‚¹æ‰§è¡Œç»“æœ
 		/// </summary>
 		public virtual BTResult Tick () 
 		{
@@ -98,12 +85,12 @@ namespace BT_BehaviourTree
 		}
 
 		/// <summary>
-		/// ½ÚµãÇåÁãµÄ½Ó¿Ú
+		/// æ¸…æ¥šæ•°æ®æˆ–è€…å…¶ä»–ä¸œè¥¿
 		/// </summary>
 		public virtual void Clear () {}
 		
 		/// <summary>
-		/// Ìí¼Ó×Ó½Úµã
+		/// æ·»åŠ å­èŠ‚ç‚¹
 		/// </summary>
 		public virtual void AddChild (BTNode aNode) 
 		{
@@ -118,7 +105,7 @@ namespace BT_BehaviourTree
 		}
 
 		/// <summary>
-		/// ÒÆ³ı×Ó½Úµã
+		/// ç§»å‡ºå­èŠ‚ç‚¹
 		/// </summary>
 		public virtual void RemoveChild (BTNode aNode) 
 		{
@@ -129,9 +116,9 @@ namespace BT_BehaviourTree
 		}
 
 		/// <summary>
-		/// ¼ì²â ÀäÈ´Ê±¼ä ¼ä¸ôÊ±¼ä ÊÇ·ñÍê³É
+		/// å†·å´æ—¶é—´æ£€æµ‹
 		/// </summary>
-		private bool CheckTimer () 
+		private bool CheckCoolTimer () 
 		{
 			if (Time.time - _lastTimeEvaluated > interval) 
 			{
@@ -143,17 +130,17 @@ namespace BT_BehaviourTree
 	}
 	
 	/// <summary>
-	/// Ö´ĞĞ½á¹û
+	/// èŠ‚ç‚¹æ‰§è¡Œç»“æœ
 	/// </summary>
 	public enum BTResult 
 	{
 		/// <summary>
-		/// Íê³É
+		/// æ‰§è¡Œç»“æŸ
 		/// </summary>
 		Ended = 1,
 
 		/// <summary>
-		/// Ö´ĞĞÖĞ
+		/// æ‰§è¡Œä¸­
 		/// </summary>
 		Running = 2,
 	}

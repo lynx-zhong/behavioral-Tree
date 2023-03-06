@@ -67,13 +67,13 @@ namespace BehaviourTreeEditor
         public static void EditorLoadTexture(string path, Rect rect)
         {
             string iconPath = string.Format("Assets/{0}/{1}.png", DefalutIconFloderPath, path);
-            Texture2D texture2D = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
-            if (texture2D == null)
+            Texture texture = AssetDatabase.LoadAssetAtPath<Texture>(iconPath);
+            if (texture == null)
             {
                 Debug.LogError("load texture is error path: " + iconPath + "   check defalutIconFolderPath is  correct");
                 return;
             }
-            GUI.DrawTexture(rect, texture2D, ScaleMode.StretchToFill);
+            GUI.DrawTexture(rect, texture, ScaleMode.StretchToFill, true,10000);
         }
     }
 }

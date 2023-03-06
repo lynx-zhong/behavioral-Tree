@@ -1,42 +1,43 @@
 using UnityEngine;
 using System.Collections;
 
-namespace BT_BehaviourTree {
-
+namespace BT_BehaviourTree 
+{
 	/// <summary>
-	/// BTSequence evaluteas the current active child, or the first child (if no active child).
-	/// 
-	/// If passed the evaluation, BTSequence ticks the current active child, or the first child (if no active child available),
-	/// and if it's result is BTEnded, then change the active child to the next one.
-	/// ˳��ִ�нڵ�
+	/// 顺序执行节点
+	/// 所有子节点 顺序执行结束后 节点执行结束
 	/// </summary>
 	public class BTSequence : BTNode 
 	{
-	
+		/// <summary>
+		/// 当前执行的子节点
+		/// </summary>
 		private BTNode _activeChild;
 		private int _activeIndex = -1;
-		
-		
+
 		public BTSequence (BTPrecondition precondition = null) : base (precondition) {}
 		
-		protected override bool DoEvaluate () {
-			if (_activeChild != null) {
-				bool result = _activeChild.Evaluate();
-				if (!result) {
+		protected override bool CustomNodeExecuteCondition () 
+		{
+			if (_activeChild != null) 
+			{
+				bool result = _activeChild.CheckNodeCanExecute();
+				if (!result) 
+				{
 					_activeChild.Clear();
 					_activeChild = null;
 					_activeIndex = -1;
 				}
 				return result;
 			}
-			else {
-				return children[0].Evaluate();
+			else 
+			{
+				return children[0].CheckNodeCanExecute();
 			}
 		}
 		
 		public override BTResult Tick () 
 		{
-			// first time
 			if (_activeChild == null) 
 			{
 				_activeChild = children[0];
@@ -45,16 +46,16 @@ namespace BT_BehaviourTree {
 
 			BTResult result = _activeChild.Tick();
 			if (result == BTResult.Ended) 
-			{	// Current active node over
+			{
 				_activeIndex++;
-				if (_activeIndex >= children.Count) 
-				{	// sequence is over
+				if (_activeIndex >= children.Count) 		// 所有子节点都运行过了，节点执行结束
+				{
 					_activeChild.Clear();
 					_activeChild = null;
 					_activeIndex = -1;
 				}
-				else 
-				{	// next node
+				else 										// 获取下一个执行节点
+				{
 					_activeChild.Clear();
 					_activeChild = children[_activeIndex];
 					result = BTResult.Running;
@@ -77,5 +78,4 @@ namespace BT_BehaviourTree {
 			}
 		}
 	}
-
 }
