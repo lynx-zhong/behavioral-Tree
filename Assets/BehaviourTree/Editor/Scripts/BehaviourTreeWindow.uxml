@@ -1,13 +1,16 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="VisualElement" style="flex-direction: row; align-items: auto; justify-content: flex-start; flex-basis: auto;">
-        <ui:VisualElement name="left" style="height: auto; width: auto; justify-content: center; flex-direction: row; flex-wrap: nowrap; margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
-            <ui:VisualElement name="top" style="flex-direction: row;">
-                <ui:Button text="Behaviour" display-tooltip-when-elided="true" name="Behaviour" />
-                <ui:Button text="Tasks" display-tooltip-when-elided="true" enable-rich-text="true" name="Tasks" />
-                <ui:Button text="Variables" display-tooltip-when-elided="true" name="Variables" />
-                <ui:Button text="Inspector" display-tooltip-when-elided="true" name="inspector" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/BehaviourTree/Editor/Scripts/BehaviourTreeWindow.uss?fileID=7433441132597879392&amp;guid=f6c58768b06d1ba4b8ecb0fcb0dd265d&amp;type=3#BehaviourTreeWindow" />
+    <ui:VisualElement name="root" style="flex-grow: 1; flex-direction: row; justify-content: flex-start; align-items: flex-start;">
+        <ui:VisualElement name="right" style="flex-grow: 1; position: relative; height: 28px; width: -276px; left: auto; top: auto; right: auto; bottom: auto;">
+            <ui:VisualElement name="top" usage-hints="None" style="flex-direction: row; flex-wrap: nowrap; flex-grow: 0; flex-shrink: 0; align-items: auto; justify-content: flex-start; width: auto; position: absolute;">
+                <ui:Button text="Button" display-tooltip-when-elided="true" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; align-items: center;" />
+                <ui:Button text="Button" display-tooltip-when-elided="true" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;" />
+                <ui:Button text="Button" display-tooltip-when-elided="true" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;" />
+                <ui:Button text="Button" display-tooltip-when-elided="true" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="right" style="justify-content: flex-end; align-items: flex-start; flex-direction: row; background-color: rgb(22, 17, 17);" />
+        <ui:VisualElement name="left" style="flex-grow: 1; position: relative; left: auto; top: 0; right: 0; bottom: 0;">
+            <BehaviourTreeEditor.BTEditorGraphViewContent focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

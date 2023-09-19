@@ -2,23 +2,29 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using System;
+using UnityEditor.Experimental.GraphView;
 
-
-public class BehaviourTreeWindow : EditorWindow
+namespace BehaviourTreeEditor
 {
-    [MenuItem("ZzWindow/BehaviourTreeWindow")]
-    public static void ShowExample()
+    public class BehaviourTreeWindow : EditorWindow
     {
-        BehaviourTreeWindow wnd = GetWindow<BehaviourTreeWindow>();
-        wnd.titleContent = new GUIContent("BehaviourTreeWindow");
-    }
+        static BTEditorGraphViewContent contentGraphView;
 
-    public void CreateGUI()
-    {
-        VisualElement root = rootVisualElement;
+        [MenuItem("ZzWindow/BehaviourTreeWindow")]
+        public static void ShowExample()
+        {
+            BehaviourTreeWindow wnd = GetWindow<BehaviourTreeWindow>("BehaviourTreeWindow");
+        }
 
-        VisualTreeAsset visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/BehaviourTree/Editor/Scripts/BehaviourTreeWindow.uxml");
-        VisualElement labelFromUXML = visualTree.Instantiate();
-        root.Add(labelFromUXML);
+        public void CreateGUI()
+        {
+            VisualElement root = rootVisualElement;
+
+            VisualTreeAsset visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/BehaviourTree/Editor/Scripts/BehaviourTreeWindow.uxml");
+            visualTree.CloneTree(root);
+
+            root.Add(contentGraphView);
+        }
     }
 }

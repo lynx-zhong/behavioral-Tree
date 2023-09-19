@@ -8,10 +8,10 @@
     <Configurations>Debug;Release</Configurations>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>Kurisu.AkiBT.Editor</RootNamespace>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
+    <AssemblyName>Kurisu.AkiBT.Editor</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <BaseDirectory>.</BaseDirectory>
   </PropertyGroup>
@@ -53,13 +53,84 @@
     <Analyzer Include="C:\Users\zhong\.vscode\extensions\visualstudiotoolsforunity.vstuc-0.9.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BehaviourTree\Editor\Scripts\BehaviourTreeWindow.cs" />
-    <Compile Include="Assets\BehaviourTree\Editor\Scripts\BTEditorGraphViewContent.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\List\ListResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Vector4Resolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Utility\BehaviorNodeConverter.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\LayerResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Menu\BehaviorTreeDropdownMenuAction.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\GroupBlock.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\ConditionalNode.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\FloatResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Vector3IntResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Field\ListField.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\GraphView\GraphEditorWindow.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Vector3Resolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\BoolResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Menu\DragDropManipulater.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Vector2IntResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Window\DecoratorSearchWindow.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Interface\ITreeView.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Shared\SharedObjectResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\BehaviorTreeSetting.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\IntResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\EnumResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Shared\SharedIntResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\RectIntResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\StringResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\CompositeNode.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\List\ObjectListResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\DoubleResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\CurveResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\GraphView\InfoView.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Vector2Resolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Field\SharedVariableField.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Shared\SharedStringResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\LongResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\BoundsIntResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\TagResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\BoundsResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\BehaviorTreeEditor.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\RootNode.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\ColorResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\List\StringListResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Service\BehaviorTreeUserServiceData.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\DecoratorNode.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Service\Search\BehaviorTreeSearchUtility.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\UserServiceEditorWindow.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Window\ObjectTypeSearchWindow.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\GradientResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Window\CompositeSearchWindowProvider.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\NodeResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Window\ConditionalSearchWindowProvider.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Field\EnumField.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\ObjectResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Service\Serialization\BehaviorTreeSerializationCollection.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\List\EnumListResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Shared\SharedVector3Resolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Window\NodeTypeSearchWindow.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Shared\SharedTObjectResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Shared\SharedFloatResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Utility\SubclassSearchUtility.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\LayerMaskResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\GraphView\BehaviorTreeView.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\List\SharedVariableListResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Utility\CopyPasteGraph.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\FieldResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\ActionNode.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\Shared\SharedBoolResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Window\NodeSearchWindowProvider.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\FieldResolverFactory.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Window\ActionSearchWindowProvider.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Member\RectResolver.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Service\Search\BehaviorTreeSearchCache.cs" />
+    <Compile Include="Assets\AkiBT\Editor\Core\Node\BehaviorTreeNode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\BehaviourTree\Editor\Scripts\BTEdiotrGraphViewContent.uss" />
-    <None Include="Assets\BehaviourTree\Editor\Scripts\BehaviourTreeWindow.uxml" />
-    <None Include="Assets\BehaviourTree\Editor\Scripts\BehaviourTreeWindow.uss" />
+    <None Include="Assets\AkiBT\Editor\Kurisu.AkiBT.Editor.asmdef" />
+    <None Include="Assets\AkiBT\Editor\Resources\AkiBT\Node.uss" />
+    <None Include="Assets\AkiBT\Editor\Resources\AkiBT\Graph.uss" />
+    <None Include="Assets\AkiBT\Editor\Resources\AkiBT\Info.uss" />
+    <None Include="Assets\AkiBT\Editor\Resources\AkiBT\Inspector.uss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -710,40 +781,20 @@
     <Reference Include="System.Xml.XPath.XDocument">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.25f1c1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.TestRunner">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.TestRunner">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TestRunner">
+      <HintPath>Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Kurisu.AkiBT.csproj" />
   </ItemGroup>
 </Project>
